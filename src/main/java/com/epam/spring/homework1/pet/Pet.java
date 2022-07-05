@@ -7,7 +7,7 @@ import java.util.List;
 @Component
 public class Pet implements Animal {
 
-    List<Animal> animals;
+    private final List<Animal> animals;
 
     public Pet(List<Animal> animals) {
         this.animals = animals;

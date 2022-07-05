@@ -8,8 +8,8 @@ import org.springframework.core.env.Environment;
 
 
 @Configuration
-@PropertySource("classpath:application.properties")
 @Import(SecondConfig.class)
+@PropertySource("classpath:application.properties")
 public class FirstConfig {
 
     private final Environment environment;

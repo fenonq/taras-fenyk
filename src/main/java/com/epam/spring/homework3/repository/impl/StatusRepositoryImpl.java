@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class StatusRepositoryImpl implements StatusRepository {
 
-    private final List<Status> list =
+    private final List<Status> list = new ArrayList<>(
             Arrays
                     .asList(
                             Status.builder().id(1L).name("New").build(),
@@ -22,7 +22,7 @@ public class StatusRepositoryImpl implements StatusRepository {
                             Status.builder().id(4L).name("Delivering").build(),
                             Status.builder().id(5L).name("Done").build(),
                             Status.builder().id(6L).name("Canceled").build()
-                    );
+                    ));
 
     @Override
     public List<Status> findAll() {

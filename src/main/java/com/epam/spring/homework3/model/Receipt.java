@@ -24,4 +24,3 @@ public class Receipt {
     private List<Dish> dishes = new ArrayList<>();
 
 }
-

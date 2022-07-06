@@ -46,20 +46,21 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/user/{id}")
-    public ResponseEntity<Void> deleteDish(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         log.info("delete user with id {}", id);
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "/user/{userId}/cart/{dishId}")
+    @PutMapping(value = "/user/{userId}/cart/add/{dishId}")
     public UserDto addDishToCart(@PathVariable Long userId, @PathVariable Long dishId) {
         log.info("adding dish {} to user {} cart", dishId, userId);
         return userService.addDishToCart(userId, dishId);
     }
 
-    @DeleteMapping(value = "/user/{userId}/cart/{dishId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "/user/{userId}/cart/remove/{dishId}")
     public UserDto removeDishFromCart(@PathVariable Long userId, @PathVariable Long dishId) {
         log.info("removing dish {} to user {} cart", dishId, userId);
         return userService.removeDishFromCart(userId, dishId);

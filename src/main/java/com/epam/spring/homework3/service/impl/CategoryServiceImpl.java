@@ -1,16 +1,16 @@
 package com.epam.spring.homework3.service.impl;
 
 import com.epam.spring.homework3.dto.CategoryDto;
+import com.epam.spring.homework3.mapper.CategoryMapper;
 import com.epam.spring.homework3.model.Category;
 import com.epam.spring.homework3.repository.CategoryRepository;
 import com.epam.spring.homework3.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -22,46 +22,32 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDto> findAll() {
         log.info("find all categories");
-
-        List<Category> categories = categoryRepository.findAll();
-        List<CategoryDto> toReturn = new ArrayList<>();
-
-        CategoryDto target;
-        for (Category source : categories) {
-            target = new CategoryDto();
-            BeanUtils.copyProperties(source, target);
-            toReturn.add(target);
-        }
-        return toReturn;
+        return categoryRepository.findAll()
+                .stream()
+                .map(CategoryMapper.INSTANCE::mapCategoryDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public CategoryDto findById(Long id) {
         log.info("find category with id {}", id);
-        Category target = categoryRepository.findById(id);
-        CategoryDto source = new CategoryDto();
-        BeanUtils.copyProperties(target, source);
-        return source;
+        Category category = categoryRepository.findById(id);
+        return CategoryMapper.INSTANCE.mapCategoryDto(category);
     }
 
     @Override
     public CategoryDto save(CategoryDto categoryDto) {
-        log.info("save category with id {}", categoryDto.getId());
-        Category category = new Category();
-        BeanUtils.copyProperties(categoryDto, category);
-        category = categoryRepository.save(category);
-        BeanUtils.copyProperties(category, categoryDto);
-        return categoryDto;
+        log.info("save category");
+        Category category = categoryRepository.save(CategoryMapper.INSTANCE.mapCategory(categoryDto));
+        return CategoryMapper.INSTANCE.mapCategoryDto(category);
     }
 
     @Override
     public CategoryDto update(Long id, CategoryDto categoryDto) {
         log.info("update category with id {}", id);
-        Category category = new Category();
-        BeanUtils.copyProperties(categoryDto, category);
-        category = categoryRepository.update(id, category);
-        BeanUtils.copyProperties(category, categoryDto);
-        return categoryDto;
+        Category category = categoryRepository.update(id,
+                CategoryMapper.INSTANCE.mapCategory(categoryDto));
+        return CategoryMapper.INSTANCE.mapCategoryDto(category);
     }
 
     @Override

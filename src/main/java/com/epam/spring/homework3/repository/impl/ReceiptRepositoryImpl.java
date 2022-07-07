@@ -1,5 +1,6 @@
 package com.epam.spring.homework3.repository.impl;
 
+import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.Receipt;
 import com.epam.spring.homework3.repository.ReceiptRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -27,13 +28,13 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
         return list.stream()
                 .filter(receipt -> receipt.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Receipt is not found!"));
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public Receipt save(Receipt receipt) {
-        log.info("save receipt with id {}", receipt.getId());
         receipt.setId(++id);
+        log.info("save receipt with id {}", receipt.getId());
         list.add(receipt);
         return receipt;
     }
@@ -45,7 +46,7 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
         if (isDeleted) {
             list.add(receipt);
         } else {
-            throw new RuntimeException("Receipt is not found!");
+            throw new EntityNotFoundException();
         }
         return receipt;
     }

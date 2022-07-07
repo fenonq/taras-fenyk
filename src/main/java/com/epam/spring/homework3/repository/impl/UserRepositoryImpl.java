@@ -1,5 +1,6 @@
 package com.epam.spring.homework3.repository.impl;
 
+import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.User;
 import com.epam.spring.homework3.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import java.util.List;
 @Component
 public class UserRepositoryImpl implements UserRepository {
 
+    private static Long id = 0L;
     private final List<User> list = new ArrayList<>();
 
     @Override
@@ -26,11 +28,13 @@ public class UserRepositoryImpl implements UserRepository {
         return list.stream()
                 .filter(user -> user.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("User is not found!"));
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public User save(User user) {
+        user.setId(++id);
+        user.setCart(new ArrayList<>());
         log.info("save user with id {}", user.getId());
         list.add(user);
         return user;
@@ -43,7 +47,7 @@ public class UserRepositoryImpl implements UserRepository {
         if (isDeleted) {
             list.add(user);
         } else {
-            throw new RuntimeException("User is not found!");
+            throw new EntityNotFoundException();
         }
         return user;
     }
@@ -52,5 +56,14 @@ public class UserRepositoryImpl implements UserRepository {
     public void deleteById(Long id) {
         log.info("delete user with id {}", id);
         list.removeIf(user -> user.getId().equals(id));
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        log.info("find user with id {}", id);
+        return list.stream()
+                .filter(user -> user.getUsername().equals(username))
+                .findFirst()
+                .orElse(null);
     }
 }

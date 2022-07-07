@@ -1,5 +1,6 @@
 package com.epam.spring.homework3.repository.impl;
 
+import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.Status;
 import com.epam.spring.homework3.repository.StatusRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,7 @@ import java.util.List;
 @Component
 public class StatusRepositoryImpl implements StatusRepository {
 
-    private final List<Status> list =
+    private final List<Status> list = new ArrayList<>(
             Arrays
                     .asList(
                             Status.builder().id(1L).name("New").build(),
@@ -22,7 +23,7 @@ public class StatusRepositoryImpl implements StatusRepository {
                             Status.builder().id(4L).name("Delivering").build(),
                             Status.builder().id(5L).name("Done").build(),
                             Status.builder().id(6L).name("Canceled").build()
-                    );
+                    ));
 
     @Override
     public List<Status> findAll() {
@@ -36,11 +37,12 @@ public class StatusRepositoryImpl implements StatusRepository {
         return list.stream()
                 .filter(status -> status.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Status is not found!"));
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public Status save(Status status) {
+        status.setId((long) (this.list.size() + 1));
         log.info("save status with id {}", status.getId());
         list.add(status);
         return status;
@@ -53,7 +55,7 @@ public class StatusRepositoryImpl implements StatusRepository {
         if (isDeleted) {
             list.add(status);
         } else {
-            throw new RuntimeException("Status is not found!");
+            throw new EntityNotFoundException();
         }
         return status;
     }

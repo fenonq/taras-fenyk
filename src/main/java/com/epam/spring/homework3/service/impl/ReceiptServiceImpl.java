@@ -1,19 +1,22 @@
 package com.epam.spring.homework3.service.impl;
 
 import com.epam.spring.homework3.dto.ReceiptDto;
+import com.epam.spring.homework3.exception.EntityNotFoundException;
+import com.epam.spring.homework3.mapper.ReceiptMapper;
 import com.epam.spring.homework3.model.*;
+import com.epam.spring.homework3.model.enums.Roles;
 import com.epam.spring.homework3.repository.ReceiptRepository;
 import com.epam.spring.homework3.repository.StatusRepository;
 import com.epam.spring.homework3.repository.UserRepository;
 import com.epam.spring.homework3.service.ReceiptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -27,46 +30,32 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public List<ReceiptDto> findAll() {
         log.info("find all receipts");
-
-        List<Receipt> receipts = receiptRepository.findAll();
-        List<ReceiptDto> toReturn = new ArrayList<>();
-
-        ReceiptDto target;
-        for (Receipt source : receipts) {
-            target = new ReceiptDto();
-            BeanUtils.copyProperties(source, target);
-            toReturn.add(target);
-        }
-        return toReturn;
+        return receiptRepository.findAll()
+                .stream()
+                .map(ReceiptMapper.INSTANCE::mapReceiptDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public ReceiptDto findById(Long id) {
         log.info("find receipt with id {}", id);
-        Receipt source = receiptRepository.findById(id);
-        ReceiptDto target = new ReceiptDto();
-        BeanUtils.copyProperties(source, target);
-        return target;
+        Receipt receipt = receiptRepository.findById(id);
+        return ReceiptMapper.INSTANCE.mapReceiptDto(receipt);
     }
 
     @Override
     public ReceiptDto save(ReceiptDto receiptDto) {
-        log.info("save receipt with id {}", receiptDto.getId());
-        Receipt receipt = new Receipt();
-        BeanUtils.copyProperties(receiptDto, receipt);
-        receipt = receiptRepository.save(receipt);
-        BeanUtils.copyProperties(receipt, receiptDto);
-        return receiptDto;
+        log.info("save receipt");
+        Receipt receipt = receiptRepository.save(ReceiptMapper.INSTANCE.mapReceipt(receiptDto));
+        return ReceiptMapper.INSTANCE.mapReceiptDto(receipt);
     }
 
     @Override
     public ReceiptDto update(Long id, ReceiptDto receiptDto) {
         log.info("update receipt with id {}", id);
-        Receipt receipt = new Receipt();
-        BeanUtils.copyProperties(receiptDto, receipt);
-        receipt = receiptRepository.update(id, receipt);
-        BeanUtils.copyProperties(receipt, receiptDto);
-        return receiptDto;
+        Receipt receipt = receiptRepository.update(id,
+                ReceiptMapper.INSTANCE.mapReceipt(receiptDto));
+        return ReceiptMapper.INSTANCE.mapReceiptDto(receipt);
     }
 
     @Override
@@ -103,10 +92,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         user.getCart().clear();
 
-        ReceiptDto receiptDto = new ReceiptDto();
-        BeanUtils.copyProperties(receipt, receiptDto);
-
-        return receiptDto;
+        return ReceiptMapper.INSTANCE.mapReceiptDto(receipt);
     }
 
     @Override
@@ -121,7 +107,6 @@ public class ReceiptServiceImpl implements ReceiptService {
         Receipt receipt = receiptRepository.findById(receiptId);
         Status statusDone = statusRepository.findByName("Done");
         Status statusCanceled = statusRepository.findByName("Canceled");
-        ReceiptDto receiptDto = new ReceiptDto();
 
         if (receipt.getManager() == null) {
             receipt.setManager(manager);
@@ -135,9 +120,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
             receiptRepository.update(receiptId, receipt);
         }
-
-        BeanUtils.copyProperties(receipt, receiptDto);
-        return receiptDto;
+        return ReceiptMapper.INSTANCE.mapReceiptDto(receipt);
     }
 
     @Override
@@ -146,13 +129,12 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         User manager = userRepository.findById(managerId);
         if (!manager.getRole().equals(Roles.MANAGER)) {
-            throw new RuntimeException("User is not a manager!");
+            throw new EntityNotFoundException();
         }
 
         Receipt receipt = receiptRepository.findById(receiptId);
         Status accepted = statusRepository.findByName("Accepted");
         Status canceled = statusRepository.findByName("Canceled");
-        ReceiptDto receiptDto = new ReceiptDto();
 
         if (receipt.getManager() == null) {
             receipt.setManager(manager);
@@ -167,7 +149,6 @@ public class ReceiptServiceImpl implements ReceiptService {
         }
 
         receiptRepository.update(receiptId, receipt);
-        BeanUtils.copyProperties(receipt, receiptDto);
-        return receiptDto;
+        return ReceiptMapper.INSTANCE.mapReceiptDto(receipt);
     }
 }

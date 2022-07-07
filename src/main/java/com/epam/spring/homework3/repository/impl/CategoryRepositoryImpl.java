@@ -1,5 +1,6 @@
 package com.epam.spring.homework3.repository.impl;
 
+import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.Category;
 import com.epam.spring.homework3.repository.CategoryRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import java.util.List;
 @Component
 public class CategoryRepositoryImpl implements CategoryRepository {
 
+    private static Long id = 0L;
     private final List<Category> list = new ArrayList<>();
 
     @Override
@@ -26,11 +28,12 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         return list.stream()
                 .filter(category -> category.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Category is not found!"));
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public Category save(Category category) {
+        category.setId(++id);
         log.info("save category with id {}", category.getId());
         list.add(category);
         return category;
@@ -43,7 +46,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         if (isDeleted) {
             list.add(category);
         } else {
-            throw new RuntimeException("Category is not found!");
+            throw new EntityNotFoundException();
         }
         return category;
     }

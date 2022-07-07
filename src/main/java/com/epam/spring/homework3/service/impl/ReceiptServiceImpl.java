@@ -2,6 +2,7 @@ package com.epam.spring.homework3.service.impl;
 
 import com.epam.spring.homework3.dto.ReceiptDto;
 import com.epam.spring.homework3.model.*;
+import com.epam.spring.homework3.model.enums.Roles;
 import com.epam.spring.homework3.repository.ReceiptRepository;
 import com.epam.spring.homework3.repository.StatusRepository;
 import com.epam.spring.homework3.repository.UserRepository;

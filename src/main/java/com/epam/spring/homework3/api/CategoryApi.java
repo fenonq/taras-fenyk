@@ -1,5 +1,6 @@
 package com.epam.spring.homework3.api;
 
+import com.epam.spring.homework3.controller.model.CategoryModel;
 import com.epam.spring.homework3.dto.CategoryDto;
 import com.epam.spring.homework3.dto.group.OnCreate;
 import com.epam.spring.homework3.dto.group.OnUpdate;
@@ -21,7 +22,7 @@ public interface CategoryApi {
     @ApiOperation("Get all categories")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    List<CategoryDto> getAllCategories();
+    List<CategoryModel> getAllCategories();
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Category id")
@@ -29,12 +30,12 @@ public interface CategoryApi {
     @ApiOperation("Get category by id")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
-    CategoryDto getCategory(@PathVariable Long id);
+    CategoryModel getCategory(@PathVariable Long id);
 
     @ApiOperation("Create category")
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/{id}")
-    CategoryDto createCategory(@RequestBody @Validated(OnCreate.class) CategoryDto categoryDto);
+    @PostMapping
+    CategoryModel createCategory(@RequestBody @Validated(OnCreate.class) CategoryDto categoryDto);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Category id")
@@ -42,8 +43,8 @@ public interface CategoryApi {
     @ApiOperation("Update category")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/{id}")
-    CategoryDto updateCategory(@PathVariable Long id,
-                               @RequestBody @Validated(OnUpdate.class) CategoryDto categoryDto);
+    CategoryModel updateCategory(@PathVariable Long id,
+                                 @RequestBody @Validated(OnUpdate.class) CategoryDto categoryDto);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Category id")

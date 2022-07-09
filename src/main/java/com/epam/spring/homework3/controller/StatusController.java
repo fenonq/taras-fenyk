@@ -1,6 +1,8 @@
 package com.epam.spring.homework3.controller;
 
 import com.epam.spring.homework3.api.StatusApi;
+import com.epam.spring.homework3.controller.assembler.StatusAssembler;
+import com.epam.spring.homework3.controller.model.StatusModel;
 import com.epam.spring.homework3.dto.StatusDto;
 import com.epam.spring.homework3.service.StatusService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -16,29 +19,35 @@ import java.util.List;
 public class StatusController implements StatusApi {
 
     private final StatusService statusService;
+    private final StatusAssembler statusAssembler;
 
     @Override
-    public List<StatusDto> getAllStatuses() {
+    public List<StatusModel> getAllStatuses() {
         log.info("find all statuses");
-        return statusService.findAll();
+        List<StatusDto> outStatusDtoList = statusService.findAll();
+        return outStatusDtoList.stream().map(statusAssembler::toModel)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public StatusDto getStatus(Long id) {
+    public StatusModel getStatus(Long id) {
         log.info("find status with id {}", id);
-        return statusService.findById(id);
+        StatusDto outStatusDto = statusService.findById(id);
+        return statusAssembler.toModel(outStatusDto);
     }
 
     @Override
-    public StatusDto createStatus(StatusDto statusDto) {
+    public StatusModel createStatus(StatusDto statusDto) {
         log.info("save status");
-        return statusService.save(statusDto);
+        StatusDto outStatusDto = statusService.save(statusDto);
+        return statusAssembler.toModel(outStatusDto);
     }
 
     @Override
-    public StatusDto updateStatus(Long id, StatusDto statusDto) {
+    public StatusModel updateStatus(Long id, StatusDto statusDto) {
         log.info("update status with id {}", id);
-        return statusService.update(id, statusDto);
+        StatusDto outStatusDto = statusService.update(id, statusDto);
+        return statusAssembler.toModel(outStatusDto);
     }
 
     @Override

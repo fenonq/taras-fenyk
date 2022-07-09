@@ -1,6 +1,8 @@
 package com.epam.spring.homework3.controller;
 
 import com.epam.spring.homework3.api.CategoryApi;
+import com.epam.spring.homework3.controller.assembler.CategoryAssembler;
+import com.epam.spring.homework3.controller.model.CategoryModel;
 import com.epam.spring.homework3.dto.CategoryDto;
 import com.epam.spring.homework3.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -16,29 +19,35 @@ import java.util.List;
 public class CategoryController implements CategoryApi {
 
     private final CategoryService categoryService;
+    private final CategoryAssembler categoryAssembler;
 
     @Override
-    public List<CategoryDto> getAllCategories() {
+    public List<CategoryModel> getAllCategories() {
         log.info("find all categories");
-        return categoryService.findAll();
+        List<CategoryDto> outCategoryDtoList = categoryService.findAll();
+        return outCategoryDtoList.stream().map(categoryAssembler::toModel)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public CategoryDto getCategory(Long id) {
+    public CategoryModel getCategory(Long id) {
         log.info("find category with id {}", id);
-        return categoryService.findById(id);
+        CategoryDto outCategoryDto = categoryService.findById(id);
+        return categoryAssembler.toModel(outCategoryDto);
     }
 
     @Override
-    public CategoryDto createCategory(CategoryDto categoryDto) {
+    public CategoryModel createCategory(CategoryDto categoryDto) {
         log.info("save category");
-        return categoryService.save(categoryDto);
+        CategoryDto outCategoryDto = categoryService.save(categoryDto);
+        return categoryAssembler.toModel(outCategoryDto);
     }
 
     @Override
-    public CategoryDto updateCategory(Long id, CategoryDto categoryDto) {
+    public CategoryModel updateCategory(Long id, CategoryDto categoryDto) {
         log.info("update category with id {}", id);
-        return categoryService.update(id, categoryDto);
+        CategoryDto outCategoryDto = categoryService.update(id, categoryDto);
+        return categoryAssembler.toModel(outCategoryDto);
     }
 
     @Override

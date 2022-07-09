@@ -1,5 +1,6 @@
 package com.epam.spring.homework3.api;
 
+import com.epam.spring.homework3.controller.model.StatusModel;
 import com.epam.spring.homework3.dto.StatusDto;
 import com.epam.spring.homework3.dto.group.OnCreate;
 import com.epam.spring.homework3.dto.group.OnUpdate;
@@ -21,7 +22,7 @@ public interface StatusApi {
     @ApiOperation("Get all statuses")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    List<StatusDto> getAllStatuses();
+    List<StatusModel> getAllStatuses();
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Status id")
@@ -29,12 +30,12 @@ public interface StatusApi {
     @ApiOperation("Get status by id")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
-    StatusDto getStatus(@PathVariable Long id);
+    StatusModel getStatus(@PathVariable Long id);
 
     @ApiOperation("Create status")
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/{id}")
-    StatusDto createStatus(@RequestBody @Validated(OnCreate.class) StatusDto statusDto);
+    @PostMapping
+    StatusModel createStatus(@RequestBody @Validated(OnCreate.class) StatusDto statusDto);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Status id")
@@ -42,8 +43,8 @@ public interface StatusApi {
     @ApiOperation("Update status")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/{id}")
-    StatusDto updateStatus(@PathVariable Long id,
-                           @RequestBody @Validated(OnUpdate.class) StatusDto statusDto);
+    StatusModel updateStatus(@PathVariable Long id,
+                             @RequestBody @Validated(OnUpdate.class) StatusDto statusDto);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Status id")

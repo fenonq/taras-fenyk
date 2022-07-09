@@ -1,5 +1,6 @@
 package com.epam.spring.homework3.api;
 
+import com.epam.spring.homework3.controller.model.ReceiptModel;
 import com.epam.spring.homework3.dto.ReceiptDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -17,7 +18,7 @@ public interface ReceiptApi {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    List<ReceiptDto> getAllReceipts();
+    List<ReceiptModel> getAllReceipts();
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Receipt id")
@@ -25,7 +26,7 @@ public interface ReceiptApi {
     @ApiOperation("Get receipt by id")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
-    ReceiptDto getReceipt(@PathVariable Long id);
+    ReceiptModel getReceipt(@PathVariable Long id);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", paramType = "path", required = true, value = "User id")
@@ -33,7 +34,7 @@ public interface ReceiptApi {
     @ApiOperation("Create receipt")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/{userId}")
-    ReceiptDto makeOrder(@PathVariable Long userId);
+    ReceiptModel makeOrder(@PathVariable Long userId);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Receipt id")
@@ -48,7 +49,7 @@ public interface ReceiptApi {
     })
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/next-status/{receiptId}/manager/{managerId}")
-    ReceiptDto nextStatus(@PathVariable Long receiptId, @PathVariable Long managerId);
+    ReceiptModel nextStatus(@PathVariable Long receiptId, @PathVariable Long managerId);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "receiptId", paramType = "path", required = true, value = "Receipt id"),
@@ -56,6 +57,6 @@ public interface ReceiptApi {
     })
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/cancel/{receiptId}/manager/{managerId}")
-    ReceiptDto cancelOrRenewReceipt(@PathVariable Long receiptId, @PathVariable Long managerId);
+    ReceiptModel cancelOrRenewReceipt(@PathVariable Long receiptId, @PathVariable Long managerId);
 
 }

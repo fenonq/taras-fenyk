@@ -1,6 +1,8 @@
 package com.epam.spring.homework3.controller;
 
 import com.epam.spring.homework3.api.ReceiptApi;
+import com.epam.spring.homework3.controller.assembler.ReceiptAssembler;
+import com.epam.spring.homework3.controller.model.ReceiptModel;
 import com.epam.spring.homework3.dto.ReceiptDto;
 import com.epam.spring.homework3.service.ReceiptService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -16,23 +19,28 @@ import java.util.List;
 public class ReceiptController implements ReceiptApi {
 
     private final ReceiptService receiptService;
+    private final ReceiptAssembler receiptAssembler;
 
     @Override
-    public List<ReceiptDto> getAllReceipts() {
+    public List<ReceiptModel> getAllReceipts() {
         log.info("find all receipts");
-        return receiptService.findAll();
+        List<ReceiptDto> outReceiptDtoList = receiptService.findAll();
+        return outReceiptDtoList.stream().map(receiptAssembler::toModel)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public ReceiptDto getReceipt(Long id) {
+    public ReceiptModel getReceipt(Long id) {
         log.info("find receipt with id {}", id);
-        return receiptService.findById(id);
+        ReceiptDto outReceiptDto = receiptService.findById(id);
+        return receiptAssembler.toModel(outReceiptDto);
     }
 
     @Override
-    public ReceiptDto makeOrder(Long userId) {
+    public ReceiptModel makeOrder(Long userId) {
         log.info("make an order");
-        return receiptService.makeOrder(userId);
+        ReceiptDto outReceiptDto = receiptService.makeOrder(userId);
+        return receiptAssembler.toModel(outReceiptDto);
     }
 
     @Override
@@ -43,15 +51,17 @@ public class ReceiptController implements ReceiptApi {
     }
 
     @Override
-    public ReceiptDto nextStatus(Long receiptId, Long managerId) {
+    public ReceiptModel nextStatus(Long receiptId, Long managerId) {
         log.info("change status in receipt with id {}", receiptId);
-        return receiptService.nextStatus(receiptId, managerId);
+        ReceiptDto outReceiptDto = receiptService.nextStatus(receiptId, managerId);
+        return receiptAssembler.toModel(outReceiptDto);
     }
 
     @Override
-    public ReceiptDto cancelOrRenewReceipt(Long receiptId, Long managerId) {
+    public ReceiptModel cancelOrRenewReceipt(Long receiptId, Long managerId) {
         log.info("cancel/renew receipt with id {}", receiptId);
-        return receiptService.cancelOrRenewReceipt(receiptId, managerId);
+        ReceiptDto outReceiptDto = receiptService.cancelOrRenewReceipt(receiptId, managerId);
+        return receiptAssembler.toModel(outReceiptDto);
     }
 
 }

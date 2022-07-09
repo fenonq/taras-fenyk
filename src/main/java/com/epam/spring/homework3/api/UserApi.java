@@ -1,5 +1,6 @@
 package com.epam.spring.homework3.api;
 
+import com.epam.spring.homework3.controller.model.UserModel;
 import com.epam.spring.homework3.dto.UserDto;
 import com.epam.spring.homework3.dto.group.OnCreate;
 import com.epam.spring.homework3.dto.group.OnUpdate;
@@ -20,7 +21,7 @@ public interface UserApi {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    List<UserDto> getAllUsers();
+    List<UserModel> getAllUsers();
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "User id")
@@ -28,12 +29,12 @@ public interface UserApi {
     @ApiOperation("Get user by id")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
-    UserDto getUser(@PathVariable Long id);
+    UserModel getUser(@PathVariable Long id);
 
     @ApiOperation("Create user")
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/{id}")
-    UserDto createUser(@RequestBody @Validated(OnCreate.class) UserDto userDto);
+    @PostMapping
+    UserModel createUser(@RequestBody @Validated(OnCreate.class) UserDto userDto);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "User id")
@@ -41,7 +42,7 @@ public interface UserApi {
     @ApiOperation("Update user")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/{id}")
-    UserDto updateUser(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) UserDto userDto);
+    UserModel updateUser(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) UserDto userDto);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "User id")
@@ -57,7 +58,7 @@ public interface UserApi {
     @ApiOperation("Add dish to user cart")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/{userId}/cart/add/{dishId}")
-    UserDto addDishToCart(@PathVariable Long userId, @PathVariable Long dishId);
+    UserModel addDishToCart(@PathVariable Long userId, @PathVariable Long dishId);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", paramType = "path", required = true, value = "User id"),
@@ -65,6 +66,6 @@ public interface UserApi {
     })
     @ApiOperation("Add dish to user cart")
     @PutMapping(value = "/{userId}/cart/remove/{dishId}")
-    UserDto removeDishFromCart(@PathVariable Long userId, @PathVariable Long dishId);
+    UserModel removeDishFromCart(@PathVariable Long userId, @PathVariable Long dishId);
 
 }

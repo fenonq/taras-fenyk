@@ -68,6 +68,11 @@ public class ReceiptServiceImpl implements ReceiptService {
     public ReceiptDto makeOrder(Long customerId) {
         log.info("make an order");
         User user = userRepository.findById(customerId);
+
+        if (user.getCart().isEmpty()) {
+            throw new EntityNotFoundException("User cart is empty!");
+        }
+
         int totalPrice =
                 user.getCart()
                         .stream()

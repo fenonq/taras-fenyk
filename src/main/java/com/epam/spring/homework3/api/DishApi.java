@@ -1,5 +1,6 @@
 package com.epam.spring.homework3.api;
 
+import com.epam.spring.homework3.controller.model.DishModel;
 import com.epam.spring.homework3.dto.DishDto;
 import com.epam.spring.homework3.dto.group.OnCreate;
 import com.epam.spring.homework3.dto.group.OnUpdate;
@@ -21,7 +22,7 @@ public interface DishApi {
     @ApiOperation("Get all dishes")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    List<DishDto> getAllDishes();
+    List<DishModel> getAllDishes();
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Dish id")
@@ -29,12 +30,12 @@ public interface DishApi {
     @ApiOperation("Get dish by id")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
-    DishDto getDish(@PathVariable Long id);
+    DishModel getDish(@PathVariable Long id);
 
     @ApiOperation("Create dish")
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/{id}")
-    DishDto createDish(@RequestBody @Validated(OnCreate.class) DishDto dishDto);
+    @PostMapping
+    DishModel createDish(@RequestBody @Validated(OnCreate.class) DishDto dishDto);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Dish id")
@@ -42,7 +43,7 @@ public interface DishApi {
     @ApiOperation("Update dish")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/{id}")
-    DishDto updateDish(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) DishDto dishDto);
+    DishModel updateDish(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) DishDto dishDto);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Dish id")

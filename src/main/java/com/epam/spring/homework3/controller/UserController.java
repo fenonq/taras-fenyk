@@ -1,6 +1,8 @@
 package com.epam.spring.homework3.controller;
 
 import com.epam.spring.homework3.api.UserApi;
+import com.epam.spring.homework3.controller.assembler.UserAssembler;
+import com.epam.spring.homework3.controller.model.UserModel;
 import com.epam.spring.homework3.dto.UserDto;
 import com.epam.spring.homework3.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -16,29 +19,35 @@ import java.util.List;
 public class UserController implements UserApi {
 
     private final UserService userService;
+    private final UserAssembler userAssembler;
 
     @Override
-    public List<UserDto> getAllUsers() {
+    public List<UserModel> getAllUsers() {
         log.info("find all users");
-        return userService.findAll();
+        List<UserDto> outUserDtoList = userService.findAll();
+        return outUserDtoList.stream().map(userAssembler::toModel)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public UserDto getUser(Long id) {
+    public UserModel getUser(Long id) {
         log.info("find user with id {}", id);
-        return userService.findById(id);
+        UserDto outUserDto = userService.findById(id);
+        return userAssembler.toModel(outUserDto);
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) {
+    public UserModel createUser(UserDto userDto) {
         log.info("save user");
-        return userService.save(userDto);
+        UserDto outUserDto = userService.save(userDto);
+        return userAssembler.toModel(outUserDto);
     }
 
     @Override
-    public UserDto updateUser(Long id, UserDto userDto) {
+    public UserModel updateUser(Long id, UserDto userDto) {
         log.info("update user with id {}", id);
-        return userService.update(id, userDto);
+        UserDto outUserDto = userService.update(id, userDto);
+        return userAssembler.toModel(outUserDto);
     }
 
     @Override
@@ -49,15 +58,17 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public UserDto addDishToCart(Long userId, Long dishId) {
+    public UserModel addDishToCart(Long userId, Long dishId) {
         log.info("adding dish {} to user {} cart", dishId, userId);
-        return userService.addDishToCart(userId, dishId);
+        UserDto outUserDto = userService.addDishToCart(userId, dishId);
+        return userAssembler.toModel(outUserDto);
     }
 
     @Override
-    public UserDto removeDishFromCart(Long userId, Long dishId) {
+    public UserModel removeDishFromCart(Long userId, Long dishId) {
         log.info("removing dish {} to user {} cart", dishId, userId);
-        return userService.removeDishFromCart(userId, dishId);
+        UserDto outUserDto = userService.removeDishFromCart(userId, dishId);
+        return userAssembler.toModel(outUserDto);
     }
 
 }

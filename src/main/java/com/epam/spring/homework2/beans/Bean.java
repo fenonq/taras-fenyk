@@ -1,6 +1,6 @@
 package com.epam.spring.homework2.beans;
 
-public abstract class Bean implements MyValidator {
+public abstract class Bean {
 
     private String name;
     private int value;
@@ -13,15 +13,28 @@ public abstract class Bean implements MyValidator {
         this.value = value;
     }
 
-    @Override
-    public void validate() {
-        if (this.name == null) {
-            this.name = "Not null";
-        }
+    public String getName() {
+        return name;
+    }
 
-        if (this.value <= 0) {
-            this.value = Math.abs(this.value) + 1;
-        }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public void myInitMethod() {
+        System.out.println("myInitMethod: " + this.getClass().getSimpleName());
+    }
+
+    public void myDestroyMethod() {
+        System.out.println("myDestroyMethod: " + this.getClass().getSimpleName());
     }
 
     @Override

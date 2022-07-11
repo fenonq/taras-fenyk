@@ -3,8 +3,8 @@ package com.epam.spring.homework2.config;
 import com.epam.spring.homework2.beans.BeanB;
 import com.epam.spring.homework2.beans.BeanC;
 import com.epam.spring.homework2.beans.BeanD;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
-import org.springframework.core.env.Environment;
 
 
 @Configuration
@@ -12,36 +12,27 @@ import org.springframework.core.env.Environment;
 @PropertySource("classpath:application.properties")
 public class FirstConfig {
 
-    private final Environment environment;
-
-    public FirstConfig(Environment environment) {
-        this.environment = environment;
-    }
-
     @Bean(initMethod = "myInitMethod",
             destroyMethod = "myDestroyMethod")
     @DependsOn("beanD")
-    public BeanB beanB() {
-        return new BeanB(environment.getProperty("beanB.name"),
-                validateInteger(environment.getProperty("beanB.value")));
+    public BeanB beanB(@Value("${beanB.name}") final String name,
+                       @Value("${beanB.value}") final int value) {
+        return new BeanB(name, value);
     }
 
     @Bean(initMethod = "myInitMethod",
             destroyMethod = "myDestroyMethod")
     @DependsOn("beanB")
-    public BeanC beanC() {
-        return new BeanC(environment.getProperty("beanC.name"),
-                validateInteger(environment.getProperty("beanC.value")));
+    public BeanC beanC(@Value("${beanC.name}") final String name,
+                       @Value("${beanC.value}") final int value) {
+        return new BeanC(name, value);
     }
 
     @Bean(initMethod = "myInitMethod",
             destroyMethod = "myDestroyMethod")
-    public BeanD beanD() {
-        return new BeanD(environment.getProperty("beanD.name"),
-                validateInteger(environment.getProperty("beanD.value")));
+    public BeanD beanD(@Value("${beanD.name}") final String name,
+                       @Value("${beanD.value}") final int value) {
+        return new BeanD(name, value);
     }
 
-    private int validateInteger(String value) {
-        return value == null ? 0 : Integer.parseInt(value);
-    }
 }

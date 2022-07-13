@@ -13,7 +13,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 public class DishAssembler extends RepresentationModelAssemblerSupport<DishDto, DishModel> {
 
     public static final String GET_ALL_REL = "get_all_dishes";
-    public static final String GET_REL = "get_dish";
     public static final String CREATE_REL = "create_dish";
     public static final String UPDATE_REL = "update_dish";
     public static final String DELETE_REL = "delete_dish";
@@ -27,7 +26,7 @@ public class DishAssembler extends RepresentationModelAssemblerSupport<DishDto, 
         DishModel dishModel = new DishModel(entity);
 
         Link getAll = linkTo(methodOn(DishController.class).getAllDishes()).withRel(GET_ALL_REL);
-        Link get = linkTo(methodOn(DishController.class).getDish(entity.getId())).withRel(GET_REL);
+        Link get = linkTo(methodOn(DishController.class).getDish(entity.getId())).withSelfRel();
         Link create = linkTo(methodOn(DishController.class).createDish(entity)).withRel(CREATE_REL);
         Link update = linkTo(methodOn(DishController.class).updateDish(entity.getId(), entity))
                 .withRel(UPDATE_REL);

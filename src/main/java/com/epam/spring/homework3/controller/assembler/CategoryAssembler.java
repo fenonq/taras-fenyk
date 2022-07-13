@@ -13,7 +13,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 public class CategoryAssembler extends RepresentationModelAssemblerSupport<CategoryDto, CategoryModel> {
 
     public static final String GET_ALL_REL = "get_all_categories";
-    public static final String GET_REL = "get_category";
     public static final String CREATE_REL = "create_category";
     public static final String UPDATE_REL = "update_category";
     public static final String DELETE_REL = "delete_category";
@@ -27,7 +26,7 @@ public class CategoryAssembler extends RepresentationModelAssemblerSupport<Categ
         CategoryModel categoryModel = new CategoryModel(entity);
 
         Link getAll = linkTo(methodOn(CategoryController.class).getAllCategories()).withRel(GET_ALL_REL);
-        Link get = linkTo(methodOn(CategoryController.class).getCategory(entity.getId())).withRel(GET_REL);
+        Link get = linkTo(methodOn(CategoryController.class).getCategory(entity.getId())).withSelfRel();
         Link create = linkTo(methodOn(CategoryController.class).createCategory(entity)).withRel(CREATE_REL);
         Link update = linkTo(methodOn(CategoryController.class).updateCategory(entity.getId(), entity))
                 .withRel(UPDATE_REL);

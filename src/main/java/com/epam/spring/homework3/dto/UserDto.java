@@ -33,15 +33,12 @@ public class UserDto {
     private String lastName;
 
     @ValidUsername(message = "{validation.message.userName.unique}")
-    @Null(message = "{validation.message.userName.null}", groups = OnUpdate.class)
     @NotBlank(message = "{validation.message.userName.notBlank}", groups = OnCreate.class)
     private String username;
 
-    @Null(message = "{validation.message.password.null}", groups = OnUpdate.class)
     @NotBlank(message = "{validation.message.password.notBlank}", groups = OnCreate.class)
     private String password;
 
-    @Null(message = "{validation.message.role.null}", groups = OnUpdate.class)
     @NotNull(message = "{validation.message.role.notNull}", groups = OnCreate.class)
     private Roles role;
 

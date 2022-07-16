@@ -48,7 +48,7 @@ public interface ReceiptApi {
             @ApiImplicitParam(name = "managerId", paramType = "path", required = true, value = "Manager id")
     })
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/next-status/{receiptId}/manager/{managerId}")
+    @PatchMapping(value = "/next-status/{receiptId}/manager/{managerId}")
     ReceiptModel nextStatus(@PathVariable Long receiptId, @PathVariable Long managerId);
 
     @ApiImplicitParams({
@@ -56,7 +56,7 @@ public interface ReceiptApi {
             @ApiImplicitParam(name = "managerId", paramType = "path", required = true, value = "Manager id")
     })
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/cancel/{receiptId}/manager/{managerId}")
+    @PatchMapping(value = "/cancel/{receiptId}/manager/{managerId}")
     ReceiptModel cancelOrRenewReceipt(@PathVariable Long receiptId, @PathVariable Long managerId);
 
 }

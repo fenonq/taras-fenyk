@@ -57,7 +57,7 @@ public interface UserApi {
     })
     @ApiOperation("Add dish to user cart")
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/{userId}/cart/add/{dishId}")
+    @PatchMapping(value = "/{userId}/cart/add/{dishId}")
     UserModel addDishToCart(@PathVariable Long userId, @PathVariable Long dishId);
 
     @ApiImplicitParams({
@@ -65,7 +65,7 @@ public interface UserApi {
             @ApiImplicitParam(name = "dishId", paramType = "path", required = true, value = "Dish id")
     })
     @ApiOperation("Add dish to user cart")
-    @PutMapping(value = "/{userId}/cart/remove/{dishId}")
+    @PatchMapping(value = "/{userId}/cart/remove/{dishId}")
     UserModel removeDishFromCart(@PathVariable Long userId, @PathVariable Long dishId);
 
 }

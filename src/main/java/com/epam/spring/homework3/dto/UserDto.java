@@ -26,20 +26,20 @@ public class UserDto {
     @NotNull(message = "{validation.message.id.notNull}", groups = OnUpdate.class)
     private Long id;
 
-    @NotBlank(message = "{validation.message.firstName.notBlank}", groups = OnCreate.class)
+    @NotBlank(message = "{validation.message.firstName.notBlank}", groups = {OnCreate.class, OnUpdate.class})
     private String firstName;
 
-    @NotBlank(message = "{validation.message.secondName.notBlank}", groups = OnCreate.class)
+    @NotBlank(message = "{validation.message.secondName.notBlank}", groups = {OnCreate.class, OnUpdate.class})
     private String lastName;
 
     @ValidUsername(message = "{validation.message.userName.unique}")
-    @NotBlank(message = "{validation.message.userName.notBlank}", groups = OnCreate.class)
+    @NotBlank(message = "{validation.message.userName.notBlank}", groups = {OnCreate.class, OnUpdate.class})
     private String username;
 
-    @NotBlank(message = "{validation.message.password.notBlank}", groups = OnCreate.class)
+    @NotBlank(message = "{validation.message.password.notBlank}", groups = {OnCreate.class, OnUpdate.class})
     private String password;
 
-    @NotNull(message = "{validation.message.role.notNull}", groups = OnCreate.class)
+    @NotNull(message = "{validation.message.role.notNull}", groups = {OnCreate.class, OnUpdate.class})
     private Roles role;
 
     @JsonIgnore

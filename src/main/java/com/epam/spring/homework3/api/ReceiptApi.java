@@ -1,7 +1,6 @@
 package com.epam.spring.homework3.api;
 
 import com.epam.spring.homework3.controller.model.ReceiptModel;
-import com.epam.spring.homework3.dto.ReceiptDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

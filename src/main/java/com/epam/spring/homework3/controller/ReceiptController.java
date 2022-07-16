@@ -53,14 +53,14 @@ public class ReceiptController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/receipt/next-status/{receiptId}/manager/{managerId}")
+    @PatchMapping(value = "/receipt/next-status/{receiptId}/manager/{managerId}")
     public ReceiptDto nextStatus(@PathVariable Long receiptId, @PathVariable Long managerId) {
         log.info("change status in receipt with id {}", receiptId);
         return receiptService.nextStatus(receiptId, managerId);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/receipt/cancel/{receiptId}/manager/{managerId}")
+    @PatchMapping(value = "/receipt/cancel/{receiptId}/manager/{managerId}")
     public ReceiptDto cancelOrRenewReceipt(@PathVariable Long receiptId, @PathVariable Long managerId) {
         log.info("cancel/renew receipt with id {}", receiptId);
         return receiptService.cancelOrRenewReceipt(receiptId, managerId);

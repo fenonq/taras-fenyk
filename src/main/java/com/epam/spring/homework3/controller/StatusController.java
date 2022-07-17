@@ -7,7 +7,6 @@ import com.epam.spring.homework3.dto.StatusDto;
 import com.epam.spring.homework3.service.StatusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,13 +47,6 @@ public class StatusController implements StatusApi {
         log.info("update status with id {}", id);
         StatusDto outStatusDto = statusService.update(id, statusDto);
         return statusAssembler.toModel(outStatusDto);
-    }
-
-    @Override
-    public ResponseEntity<Void> deleteStatus(Long id) {
-        log.info("delete status with id {}", id);
-        statusService.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 
 }

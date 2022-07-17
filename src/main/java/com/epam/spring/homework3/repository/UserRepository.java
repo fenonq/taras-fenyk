@@ -1,9 +1,20 @@
 package com.epam.spring.homework3.repository;
 
 import com.epam.spring.homework3.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+import javax.transaction.Transactional;
 
-    User findUserByUsername(String username);
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    User findByUsername(@Param("username") String username);
+
+    @Modifying
+    @Transactional
+    @Query("update User u set u.active = :active where u.id = :id")
+    void changUserStatus(@Param("id") Long id, @Param("active") boolean active);
 
 }

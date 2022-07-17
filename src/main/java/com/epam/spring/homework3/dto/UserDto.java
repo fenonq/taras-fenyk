@@ -2,10 +2,8 @@ package com.epam.spring.homework3.dto;
 
 import com.epam.spring.homework3.dto.group.OnCreate;
 import com.epam.spring.homework3.dto.group.OnUpdate;
-import com.epam.spring.homework3.model.Dish;
 import com.epam.spring.homework3.model.enums.Roles;
 import com.epam.spring.homework3.validation.ValidUsername;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,8 +43,10 @@ public class UserDto {
     @NotNull(message = "{validation.message.role.notNull}", groups = OnCreate.class)
     private Roles role;
 
-    @JsonIgnore
+    @Null(message = "{validation.message.active.null}")
+    private Boolean active;
+
     @Null(message = "{validation.message.cart.null}")
-    private List<Dish> cart;
+    private List<DishDto> cart;
 
 }

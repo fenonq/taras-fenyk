@@ -2,7 +2,6 @@ package com.epam.spring.homework3.dto;
 
 import com.epam.spring.homework3.dto.group.OnCreate;
 import com.epam.spring.homework3.dto.group.OnUpdate;
-import com.epam.spring.homework3.model.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +26,7 @@ public class DishDto {
     private String description;
 
     @NotNull(message = "{validation.message.category.notNull}", groups = OnCreate.class)
-    private Category category;
+    private CategoryDto category;
 
     @Min(value = 1, message = "{validation.message.price.min}")
     @Max(value = 9999, message = "{validation.message.price.max}")
@@ -36,5 +35,8 @@ public class DishDto {
     @Min(value = 1, message = "{validation.message.weight.min}")
     @Max(value = 9999, message = "{validation.message.weight.max}")
     private int weight;
+
+    @Null(message = "{validation.message.visible.null}")
+    private Boolean visible;
 
 }

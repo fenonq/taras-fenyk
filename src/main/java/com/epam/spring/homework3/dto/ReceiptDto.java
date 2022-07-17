@@ -1,8 +1,5 @@
 package com.epam.spring.homework3.dto;
 
-import com.epam.spring.homework3.model.Dish;
-import com.epam.spring.homework3.model.Status;
-import com.epam.spring.homework3.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,11 +18,11 @@ import java.util.List;
 public class ReceiptDto {
 
     private Long id;
-    private User customer;
-    private User manager;
-    private Status status;
+    private UserDto customer;
+    private UserDto manager;
+    private StatusDto status;
     private Integer totalPrice;
     private LocalDateTime createDate;
-    private List<Dish> dishes = new ArrayList<>();
+    private List<DishDto> dishes = new ArrayList<>();
 
 }

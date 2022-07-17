@@ -24,4 +24,7 @@ public class CategoryDto {
     @NotBlank(message = "{validation.message.name.notBlank}", groups = OnCreate.class)
     private String name;
 
+    @Null(message = "{validation.message.visible.null}")
+    private Boolean visible;
+
 }

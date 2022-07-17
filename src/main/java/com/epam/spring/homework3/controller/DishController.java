@@ -7,10 +7,11 @@ import com.epam.spring.homework3.dto.DishDto;
 import com.epam.spring.homework3.service.DishService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -22,11 +23,11 @@ public class DishController implements DishApi {
     private final DishAssembler dishAssembler;
 
     @Override
-    public List<DishModel> getAllDishes() {
-        log.info("find all dishes");
-        List<DishDto> outDishDtoList = dishService.findAll();
-        return outDishDtoList.stream().map(dishAssembler::toModel)
-                .collect(Collectors.toList());
+    public Page<DishModel> getAllDishes(Pageable pageable) {
+        log.info("find all pageable dishes {}", pageable);
+        Page<DishDto> outDishDtoList = dishService.findAll(pageable);
+        return new PageImpl<>(outDishDtoList.stream().map(dishAssembler::toModel)
+                .collect(Collectors.toList()));
     }
 
     @Override
@@ -51,10 +52,10 @@ public class DishController implements DishApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteDish(Long id) {
-        log.info("delete dish with id {}", id);
-        dishService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public DishModel changeVisibility(Long id) {
+        log.info("change dish visibility with id {}", id);
+        DishDto outDishDto = dishService.changeVisibility(id);
+        return dishAssembler.toModel(outDishDto);
     }
 
 }

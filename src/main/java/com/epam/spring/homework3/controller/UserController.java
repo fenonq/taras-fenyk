@@ -7,7 +7,6 @@ import com.epam.spring.homework3.dto.UserDto;
 import com.epam.spring.homework3.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,13 +50,6 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteUser(Long id) {
-        log.info("delete user with id {}", id);
-        userService.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @Override
     public UserModel addDishToCart(Long userId, Long dishId) {
         log.info("adding dish {} to user {} cart", dishId, userId);
         UserDto outUserDto = userService.addDishToCart(userId, dishId);
@@ -68,6 +60,13 @@ public class UserController implements UserApi {
     public UserModel removeDishFromCart(Long userId, Long dishId) {
         log.info("removing dish {} to user {} cart", dishId, userId);
         UserDto outUserDto = userService.removeDishFromCart(userId, dishId);
+        return userAssembler.toModel(outUserDto);
+    }
+
+    @Override
+    public UserModel banUser(Long id) {
+        log.info("ban/unban user with id {}", id);
+        UserDto outUserDto = userService.changeActive(id);
         return userAssembler.toModel(outUserDto);
     }
 

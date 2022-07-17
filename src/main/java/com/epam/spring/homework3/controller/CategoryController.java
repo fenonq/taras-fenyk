@@ -7,7 +7,6 @@ import com.epam.spring.homework3.dto.CategoryDto;
 import com.epam.spring.homework3.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,10 +50,10 @@ public class CategoryController implements CategoryApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteCategory(Long id) {
-        log.info("delete category with id {}", id);
-        categoryService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public CategoryModel changeVisibility(Long id) {
+        log.info("change category visibility with id {}", id);
+        CategoryDto outCategoryDto = categoryService.changeVisibility(id);
+        return categoryAssembler.toModel(outCategoryDto);
     }
 
 }

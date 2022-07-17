@@ -7,7 +7,6 @@ import com.epam.spring.homework3.dto.ReceiptDto;
 import com.epam.spring.homework3.service.ReceiptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,13 +40,6 @@ public class ReceiptController implements ReceiptApi {
         log.info("make an order");
         ReceiptDto outReceiptDto = receiptService.makeOrder(userId);
         return receiptAssembler.toModel(outReceiptDto);
-    }
-
-    @Override
-    public ResponseEntity<Void> deleteReceipt(Long id) {
-        log.info("delete receipt with id {}", id);
-        receiptService.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 
     @Override

@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,12 +44,5 @@ public interface StatusApi {
     @PutMapping(value = "/{id}")
     StatusModel updateStatus(@PathVariable Long id,
                              @RequestBody @Validated(OnUpdate.class) StatusDto statusDto);
-
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "Status id")
-    })
-    @ApiOperation("Delete status")
-    @DeleteMapping(value = "/{id}")
-    ResponseEntity<Void> deleteStatus(@PathVariable Long id);
 
 }

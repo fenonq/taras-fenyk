@@ -39,7 +39,7 @@ public interface UserApi {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", paramType = "path", required = true, value = "User id")
     })
-    @ApiOperation("Update user")
+    @ApiOperation("Update user firstName and lastName")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/{id}")
     UserModel updateUser(@PathVariable Long id, @RequestBody @Validated(OnUpdate.class) UserDto userDto);
@@ -64,7 +64,7 @@ public interface UserApi {
             @ApiImplicitParam(name = "userId", paramType = "path", required = true, value = "User id"),
             @ApiImplicitParam(name = "dishId", paramType = "path", required = true, value = "Dish id")
     })
-    @ApiOperation("Add dish to user cart")
+    @ApiOperation("Remove dish to user cart")
     @PatchMapping(value = "/{userId}/cart/remove/{dishId}")
     UserModel removeDishFromCart(@PathVariable Long userId, @PathVariable Long dishId);
 

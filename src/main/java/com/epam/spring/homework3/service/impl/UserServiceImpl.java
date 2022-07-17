@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -48,8 +49,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto update(Long id, UserDto userDto) {
         log.info("update user with id {}", id);
-        User user = userRepository.update(id,
-                UserMapper.INSTANCE.mapUser(userDto));
+        User user = userRepository.findById(id);
+        user = userRepository.update(id,
+                UserMapper.INSTANCE.populateUserWithPresentUserDtoFields(user, userDto));
         return UserMapper.INSTANCE.mapUserDto(user);
     }
 
@@ -89,4 +91,16 @@ public class UserServiceImpl implements UserService {
         }
         return UserMapper.INSTANCE.mapUserDto(user);
     }
+
+//    private User populateUserWithPresentUserDtoFields(User user, UserDto userDto) {
+//        String firstName = userDto.getFirstName();
+//        if (Objects.nonNull(firstName)) {
+//            user.setFirstName(firstName);
+//        }
+//        String lastName = userDto.getLastName();
+//        if (Objects.nonNull(lastName)) {
+//            user.setLastName(lastName);
+//        }
+//        return user;
+//    }
 }

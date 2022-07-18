@@ -1,6 +1,7 @@
 package com.epam.spring.homework3.service.impl;
 
 import com.epam.spring.homework3.dto.UserDto;
+import com.epam.spring.homework3.exception.EntityExistsException;
 import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.mapper.UserMapper;
 import com.epam.spring.homework3.model.Dish;
@@ -44,6 +45,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto save(UserDto userDto) {
         log.info("save user");
+        if (userRepository.findByUsername(userDto.getUsername()) != null) {
+            throw new EntityExistsException("User with this username already exists");
+        }
         User user = UserMapper.INSTANCE.mapUser(userDto);
         user.setActive(true);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));

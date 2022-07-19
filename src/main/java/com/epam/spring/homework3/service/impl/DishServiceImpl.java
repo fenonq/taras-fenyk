@@ -70,7 +70,7 @@ public class DishServiceImpl implements DishService {
     public Page<DishDto> findAll(Pageable pageable) {
         Page<Dish> pagedResult = dishRepository.findAll(pageable);
         return new PageImpl<>(pagedResult.getContent().stream().map(DishMapper.INSTANCE::mapDishDto)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()), pageable, pagedResult.getSize());
     }
 
     @Override

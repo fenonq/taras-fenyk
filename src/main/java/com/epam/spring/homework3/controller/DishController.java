@@ -27,7 +27,7 @@ public class DishController implements DishApi {
         log.info("find all pageable dishes {}", pageable);
         Page<DishDto> outDishDtoList = dishService.findAll(pageable);
         return new PageImpl<>(outDishDtoList.stream().map(dishAssembler::toModel)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()), pageable, outDishDtoList.getSize());
     }
 
     @Override

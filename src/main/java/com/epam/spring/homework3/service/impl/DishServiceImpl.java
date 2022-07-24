@@ -68,14 +68,16 @@ public class DishServiceImpl implements DishService {
 
     @Override
     public Page<DishDto> findAll(Pageable pageable) {
+        log.info("find all dishes {}", pageable);
         Page<Dish> pagedResult = dishRepository.findAll(pageable);
         return new PageImpl<>(pagedResult.getContent().stream().map(DishMapper.INSTANCE::mapDishDto)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()), pageable, pagedResult.getSize());
     }
 
     @Override
     @Transactional
     public DishDto changeVisibility(Long id) {
+        log.info("change dish visibility with id {}", id);
         Dish dish = dishRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         dish.setVisible(!dish.isVisible());
         dishRepository.save(dish);

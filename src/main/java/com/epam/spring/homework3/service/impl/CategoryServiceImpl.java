@@ -70,6 +70,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryDto changeVisibility(Long id) {
+        log.info("change category visibility with id {}", id);
         Category category = categoryRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         boolean visibility = !category.isVisible();
         category.setVisible(visibility);

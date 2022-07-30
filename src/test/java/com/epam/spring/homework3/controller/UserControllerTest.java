@@ -3,6 +3,7 @@ package com.epam.spring.homework3.controller;
 import com.epam.spring.homework3.controller.assembler.UserAssembler;
 import com.epam.spring.homework3.controller.model.UserModel;
 import com.epam.spring.homework3.dto.UserDto;
+import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.enums.ErrorType;
 import com.epam.spring.homework3.service.UserService;
 import com.epam.spring.homework3.test.config.TestConfig;
@@ -76,6 +77,29 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.id").value(ID))
                 .andExpect(jsonPath("$.username").value(userDto.getUsername()));
         verify(userService).findById(anyLong());
+    }
+
+    @Test
+    void getUserNotFoundTest() throws Exception {
+        when(userService.findById(anyLong())).thenThrow(new EntityNotFoundException());
+
+        mockMvc.perform(get(USERS_URL + "/" + ID))
+                .andDo(print())
+                .andExpect(status().is5xxServerError())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorType").value(ErrorType.VALIDATION_ERROR_TYPE.name()));
+        verify(userService).findById(anyLong());
+    }
+
+    @Test
+    void fatalErrorTest() throws Exception {
+        when(userService.findById(anyLong())).thenThrow(new RuntimeException());
+
+        mockMvc.perform(get(USERS_URL + "/" + ID))
+                .andDo(print())
+                .andExpect(status().is5xxServerError())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorType").value(ErrorType.FATAL_ERROR_TYPE.name()));
     }
 
     @Test

@@ -112,6 +112,28 @@
 					</compilerArgs>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.9.2</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>1.0.0</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<targetClasses>
+						<param>com.epam.spring.homework3.controller.*Controller</param>
+						<param>com.epam.spring.homework3.service.*</param>
+					</targetClasses>
+					<targetTests>
+						<param>com.epam.spring.homework3.controller.*</param>
+						<param>com.epam.spring.homework3.service.*</param>
+					</targetTests>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
